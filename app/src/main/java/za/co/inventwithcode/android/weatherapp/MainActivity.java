@@ -39,8 +39,6 @@ public class MainActivity extends AppCompatActivity {
         d4Temperature = (TextView) findViewById(R.id.d4Temperature);
         d5Temperature = (TextView) findViewById(R.id.d5Temperature);
 
-        d2Day.setText("Tuesday");
-
 
         // Acquire a reference to the system Location Manager
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
@@ -73,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Location Access required to update weather forcasts", Toast.LENGTH_LONG);
         }
         else{
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1, 1, locationListener);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1, 1, locationListener);
             Toast.makeText(this, "Location requested", Toast.LENGTH_SHORT).show();
         }
     }
