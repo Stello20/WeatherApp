@@ -13,15 +13,13 @@ import java.net.URL;
 public class HttpClientWeather {
 
 
-    public static final String API_URL_Forcast5 = "api.openweathermap.org/data/2.5/forecast?lat=";
-    public static final String API_URL_Weather = "api.openweathermap.org/data/2.5/weather?lat=";
 
-    public static String getJSONWeatherData(float lat, float lon) {
+    public static String getJSONData(String urlAddress) {
         HttpURLConnection connection = null;
         BufferedReader reader = null;
 
         try {
-            URL url = new URL(API_URL_Forcast5+lat+"&lon="+lon);
+            URL url = new URL(urlAddress);
             connection = (HttpURLConnection) url.openConnection();
             connection.connect();
 
