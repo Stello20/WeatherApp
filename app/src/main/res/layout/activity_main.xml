@@ -30,7 +30,7 @@
             app:srcCompat="@drawable/forest_sunny" />
 
         <TextView
-            android:id="@+id/imageViewCurrentTemperature"
+            android:id="@+id/topCurrentTemperature"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -38,8 +38,8 @@
             android:layout_marginTop="52dp"
             android:gravity="center"
             android:text=" 20&#176;"
-            android:textStyle="bold"
-            android:textSize="66sp" />
+            android:textSize="66sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/imageviewWeatherType"
@@ -78,14 +78,14 @@
             android:textAlignment="center" />
 
         <TextView
-            android:id="@+id/currentTemperature"
+            android:id="@+id/middleCurrentTemperature"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:contentDescription="Shows current temperature"
             android:text="0"
-            android:textStyle="bold"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/maxTemperature"

@@ -58,4 +58,36 @@ public class HttpClientWeather {
         }
         return null;
     }
+
+    public static String getWeatherData(String url){
+        HttpURLConnection connection = null;
+        InputStream inputStream = null;
+
+        try{
+            connection = (HttpURLConnection) (new URL(url)).openConnection();
+            connection.setRequestMethod("GET");
+            connection.setDoInput(true);
+            connection.connect();
+
+            //Read response
+            StringBuffer stringBuffer = new StringBuffer();
+            inputStream = connection.getInputStream();
+            BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
+            String line = null;
+
+            while((line = bufferReader.readLine())!= null){
+                stringBuffer.append(line+"\r\n");
+            }
+
+            inputStream.close();
+            connection.disconnect();
+
+            return stringBuffer.toString();
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }

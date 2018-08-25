@@ -31,7 +31,9 @@ public class MainActivity extends AppCompatActivity {
 
     TextView d1Day, d2Day, d3Day, d4Day, d5Day;
     ImageView d1Weather, d2Weather, d3Weather, d4Weather, d5Weather;
-    TextView d1Temperature, d2Temperature, d3Temperature, d4Temperature, d5Temperature;
+    //TextView d1Temperature, d2Temperature, d3Temperature, d4Temperature, d5Temperature;
+    public TextView[] dTemperature = new TextView[5];
+    TextView topCurrentTemperature;
 
 
     @Override
@@ -39,11 +41,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        d1Temperature = findViewById(R.id.d1Temperature);
+        /**d1Temperature = findViewById(R.id.d1Temperature);
         d2Temperature = findViewById(R.id.d2Temperature);
         d3Temperature = findViewById(R.id.d3Temperature);
         d4Temperature = findViewById(R.id.d4Temperature);
         d5Temperature = findViewById(R.id.d5Temperature);
+        **/
+        dTemperature[0] = findViewById(R.id.d1Temperature);
+        dTemperature[1] = findViewById(R.id.d2Temperature);
+        dTemperature[2] = findViewById(R.id.d3Temperature);
+        dTemperature[3] = findViewById(R.id.d4Temperature);
+        dTemperature[4] = findViewById(R.id.d5Temperature);
 
         d1Day = findViewById(R.id.d1Day);
         d2Day = findViewById(R.id.d2Day);
@@ -56,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
         d3Weather = findViewById(R.id.d3Weather);
         d4Weather = findViewById(R.id.d4Weather);
         d5Weather = findViewById(R.id.d5Weather);
+
+        topCurrentTemperature = findViewById(R.id.topCurrentTemperature);
 
         requestLocationPermissions();
         requestInternetPermissions();
@@ -166,38 +176,44 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    public static void setForecastData(String URL_Forecast) throws JSONException {
+    public void setForecastData(String URL_Forecast) throws JSONException {
 
+        int count=0;
         String JSONForecast = HttpClientWeather.getJSONData(URL_Forecast);
         JSONObject obj = new JSONObject(JSONForecast);
         JSONArray listArray = obj.getJSONArray("list"); //gives all weather forecasts 0 - 39
-        for (int i = 0; i < listArray.length(); i+=8){  // loops through each weather record from 0 - 39
+        for (int i = 0; i < listArray.length(); i+=8){  // loops through each weather record from 0 - 39 in increments of 8 to get 5 records at the same time
             JSONObject listObj = listArray.getJSONObject(i); //creates obj ref to current weather obj in list
             JSONArray weatherArray = listObj.getJSONArray("weather"); // creates arr ref to weather array
             JSONObject weatherObj = weatherArray.getJSONObject(0); //points to first and only ref of object in weatherList
             String weather = weatherObj.getString("main");
             String iconCode = weatherObj.getString("icon");
             JSONObject mainObj = listObj.getJSONObject("main");
-            double temperature = mainObj.getDouble("temp");
+            double temperature = Math.round(mainObj.getDouble("temp")-273.15);
             Log.d("JOSN:","Date time: "+listObj.getString("dt_txt"));
             Log.d("JOSN:","Day");
-            Log.d("JOSN:","Temperature: "+Math.round(temperature - 273.15));//convert to Celcius
+            Log.d("JOSN:","Temperature: "+temperature);//convert to Celcius
             Log.d("JOSN:","Weather: "+weather);
             Log.d("JOSN:","ICON code: "+iconCode);
+            dTemperature[count].setText(temperature+"");
+            count++;
         }
 
     }
 
-    public static void setWeatherData(String URL_Weather) throws JSONException {
-        String JSONWeather = HttpClientWeather.getJSONData(URL_Weather);
+    public void setWeatherData(String URL_Weather) throws JSONException {
+        String JSONWeather = HttpClientWeather.getWeatherData(URL_Weather);
         JSONObject obj = new JSONObject(JSONWeather);
         JSONArray arr = obj.getJSONArray("weather");
         JSONObject weatherObj = arr.getJSONObject(0);
         System.out.println("Weather:"+weatherObj.getString("main"));
         JSONObject mainObj = obj.getJSONObject("main");
+        double temperature = +mainObj.getDouble("temp");
         Log.d("JOSN:","minTemp:"+mainObj.getDouble("temp_min"));
         Log.d("JOSN:","maxTemp:"+mainObj.getDouble("temp_max"));
-        Log.d("JOSN:","Temp:"+mainObj.getDouble("temp"));
+        Log.d("JOSN:","Temp:");
+        topCurrentTemperature.setText(temperature+"&#176;");
+
     }
     public void refresh5DaysWeather(){
 
